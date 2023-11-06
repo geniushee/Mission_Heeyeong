@@ -1,17 +1,22 @@
 package org.example;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class App {
+    @Setter
+    @Getter
     static Scanner scanner; // 표준입력 클래스
     static boolean running; // 스위치
 
     List<Quotation> quotations; // 명언 저장소
 
     // 초기화
-    App(){
+    public App(){
         scanner = new Scanner(System.in);
         running = true;
         quotations = new ArrayList<>();
@@ -42,7 +47,7 @@ public class App {
         running = false;
     }
 
-    void enroll(){
+    public void enroll(){
         System.out.print("명언 : "); // 명언 입력
         String content = scanner.nextLine();
         System.out.print("작가 : "); // 작가 입력
