@@ -13,12 +13,15 @@ public class App {
     static Scanner scanner; // 표준입력 클래스
     static boolean running; // 스위치
 
+    int idCounter; // id 개수 표기
+
     List<Quotation> quotations; // 명언 저장소
 
     // 초기화
     public App(){
         scanner = new Scanner(System.in);
         running = true;
+        idCounter = 1;
         quotations = new ArrayList<>();
     }
 
@@ -51,11 +54,15 @@ public class App {
         System.out.print("작가 : "); // 작가 입력
         String author = scanner.nextLine();
 
-        Quotation q = new Quotation(1, content, author); // id, 명언, 작가 객체에 저장
+        Quotation q = new Quotation(idCounter, content, author); // id, 명언, 작가 객체에 저장
+        idCounter++;
         quotations.add(q);  // 저장소에 저장
         System.out.println(q.id + "번 명언이 등록되었습니다.");
     }
 
+    void list(){
+
+    }
 
 
 
