@@ -18,37 +18,42 @@ public class App {
     List<Quotation> quotations; // 명언 저장소
 
     // 초기화
-    public App(){
+    public App() {
         scanner = new Scanner(System.in);
         running = true;
         idCounter = 1;
         quotations = new ArrayList<>();
     }
 
-    public void run(){
+    public void run() {
         String cmd; // 명령어 받을 객체
 
         System.out.println("== 명언 앱 ==");
 
         //명언앱 구동스위치
-        while(running){
+        while (running) {
             System.out.print("명령)");
             cmd = scanner.nextLine();
             // 종료 조건
-            if(cmd.equals("종료")){
-                exitApp();
-
-            } else if (cmd.equals("등록")) {
-                enroll(); // 등록 기능
+            switch (cmd){
+                case "종료":
+                    exitApp(); // 종료
+                    break;
+                case "등록":
+                    enroll(); // 등록 기능
+                    break;
+                case "목록":
+                    list(); // 목록 기능
+                    break;
             }
         }
     }
 
-    void exitApp(){
+    void exitApp() {
         running = false;
     }
 
-    public void enroll(){
+    public void enroll() {
         System.out.print("명언 : "); // 명언 입력
         String content = scanner.nextLine();
         System.out.print("작가 : "); // 작가 입력
@@ -60,10 +65,12 @@ public class App {
         System.out.println(q.id + "번 명언이 등록되었습니다.");
     }
 
-    void list(){
-
+    void list() {
+        System.out.println("번호 / 작가 / 명언\n----------------------");
+        for (Quotation q : quotations) {
+            System.out.println(q.id + " / " + q.author + " / " + q.content);
+        }
     }
-
 
 
 }

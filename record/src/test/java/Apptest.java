@@ -36,6 +36,21 @@ public class Apptest {
 
     }
 
+    @Test
+    @DisplayName("등록 및 목록 test")
+    void t2(){
+        app.setScanner(genScanner("""
+                등록
+                하하하
+                하하
+                등록
+                123
+                1
+                목록
+                종료"""));
+        app.run();
+    }
+
     Scanner genScanner(String input){
         InputStream in = new ByteArrayInputStream(input.getBytes());
         return new Scanner(in);
