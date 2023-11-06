@@ -9,9 +9,18 @@ public class Apptest {
     App app = new App();
 
     @Test
-    @DisplayName("t1 실시")
+    @DisplayName("등록 종료 프로세스 실시")
     void t1(){
 //        ByteArrayOutputStream byteArrayOutputStream = setOutToByteArray();
+//        clearSetOutOtByteArray(byteArrayOutputStream);
+        app.setScanner(genScanner("""
+                등록
+                명언이다.
+                작가
+                종료"""));
+        app.run();
+
+//
 //        app.run();
 //        assertThat().(output.toString().trim());
 //        App.setScanner(genScanner("""

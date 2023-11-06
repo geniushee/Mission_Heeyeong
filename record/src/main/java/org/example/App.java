@@ -39,8 +39,6 @@ public class App {
                 enroll(); // 등록 기능
             }
         }
-
-
     }
 
     void exitApp(){
@@ -55,5 +53,10 @@ public class App {
 
         Quotation q = new Quotation(1, content, author); // id, 명언, 작가 객체에 저장
         quotations.add(q);  // 저장소에 저장
+        System.out.println(q.id + "번 명언이 등록되었습니다.");
     }
+
+
+
+
 }
