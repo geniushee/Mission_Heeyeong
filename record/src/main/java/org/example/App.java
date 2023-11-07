@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.utils.util;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +34,9 @@ public class App {
         String cmd; // 명령어 받을 객체
         Request Rq; // 명령어 정리 객체
 
+        System.out.println("저장된 파일을 불러 옵니다.");
+        load(path);
+        list();
         System.out.println("== 명언 앱 ==\n명령어 : 등록," +
                 "목록, 삭제?id=0, 수정?id=0, 종료");
 
@@ -124,16 +125,44 @@ public class App {
         }
     }
 
-    void save(String filePath){
-        try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath))){
-            for (Quotation q : quotations){
-            bufferedWriter.write(q.getId() + "/" + q.getContent() + "/" + q.getAuthor());
-            bufferedWriter.newLine(); // 새로운 줄로 이동
+    void save(String filePath) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath))) {
+            for (Quotation q : quotations) {
+                bufferedWriter.write(q.getId() + "/" + q.getContent() + "/" + q.getAuthor());
+                bufferedWriter.newLine(); // 새로운 줄로 이동
             }
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
+    void load(String path) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] data = line.split("/");
+                int id = 0;
+                String content = "";
+                String author = "";
+                for (int i = 0; i < data.length; i++){
+                    switch(i % 3){
+                        case 0:
+                            id = Integer.parseInt(data[i]);
+                            break;
+                        case 1:
+                            content = data[i];
+                            break;
+                        case 2:
+                            author = data[i];
+                            break;
+                    }
+
+                }
+                quotations.add(new Quotation(id,content,author));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
