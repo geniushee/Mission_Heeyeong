@@ -3,9 +3,7 @@ package org.example;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class App {
     @Setter
@@ -27,6 +25,8 @@ public class App {
 
     public void run() {
         String cmd; // 명령어 받을 객체
+        String act; // 어떤 활동을 할 것인가
+        Map<String, String> opt; // 활동 외 다양한 옵션
 
         System.out.println("== 명언 앱 ==");
 
@@ -34,8 +34,10 @@ public class App {
         while (running) {
             System.out.print("명령)");
             cmd = scanner.nextLine();
+            act = cmdSplit(cmd); // 활동 찾기
+            opt = optionSplit(cmd); // 옵션 정리
             // 종료 조건
-            switch (cmd){
+            switch (act){
                 case "종료":
                     exitApp(); // 종료
                     break;
@@ -45,7 +47,50 @@ public class App {
                 case "목록":
                     list(); // 목록 기능
                     break;
+                case "삭제":
+                    del(opt);
+                    break;
             }
+        }
+    }
+
+    String cmdSplit(String cmd){
+        // 활동 분리
+        String[] s = cmd.split("\\?");
+        return s[0];
+    }
+
+    Map<String, String> optionSplit(String cmd){
+        String[] s = cmd.split("\\?");
+        Map<String, String> map = new HashMap<>();
+        if (s.length > 1){
+        String[] options = s[1].split("=");
+        for (int i = 0; i<options.length;i+=2){
+            map.put(options[i],options[i+1]);
+        }}
+        return map;
+    }
+
+
+
+
+
+    private void del(Map<String, String> opt) {
+        int num = Integer.parseInt(opt.get("id"));
+        int index = -1;
+        for (int i = 0; i < quotations.size();i++){
+            if (quotations.get(i).id == num){
+                index = i;
+                break;
+            } else {
+                index = -1;
+            }
+        }
+        if (index == -1){
+            System.out.println(num + "번 명언은 존재하지 않습니다.");
+        } else{
+            quotations.remove(index);
+            System.out.println(num + "번 명언이 삭제되었습니다.");
         }
     }
 

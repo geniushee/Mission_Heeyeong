@@ -51,6 +51,27 @@ public class Apptest {
         app.run();
     }
 
+
+    @Test
+    @DisplayName("삭제 test")
+    void t3(){
+        app.setScanner(genScanner("""
+                등록
+                하하하
+                하하
+                등록
+                내용
+                작가
+                등록
+                내용2
+                작가2
+                목록
+                삭제?id=1
+                삭제?id=1
+                종료"""));
+        app.run();
+    }
+
     Scanner genScanner(String input){
         InputStream in = new ByteArrayInputStream(input.getBytes());
         return new Scanner(in);
