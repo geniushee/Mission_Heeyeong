@@ -2,21 +2,25 @@ package org.example;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.example.utils.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 public class App {
     @Setter
     @Getter
     static Scanner scanner; // 표준입력 클래스
     static boolean running; // 스위치
-
     int idCounter; // id 개수 표기
-
     List<Quotation> quotations; // 명언 저장소
+    Request Rq; // 명령어 정리
 
     // 초기화
     public App() {
+        // 초기화
         scanner = new Scanner(System.in);
         running = true;
         idCounter = 1;
@@ -25,19 +29,18 @@ public class App {
 
     public void run() {
         String cmd; // 명령어 받을 객체
-        String act; // 어떤 활동을 할 것인가
-        Map<String, String> opt; // 활동 외 다양한 옵션
+        Request Rq; // 명령어 정리 객체
 
-        System.out.println("== 명언 앱 ==");
+        System.out.println("== 명언 앱 ==\n명령어 : 등록," +
+                "목록, 삭제?id=0, 수정?id=0, 종료");
 
         //명언앱 구동스위치
         while (running) {
             System.out.print("명령)");
             cmd = scanner.nextLine();
-            act = cmdSplit(cmd); // 활동 찾기
-            opt = optionSplit(cmd); // 옵션 정리
-            // 종료 조건
-            switch (act){
+            Rq = new Request(cmd);
+            // 기능별 명령어
+            switch (Rq.act) {
                 case "종료":
                     exitApp(); // 종료
                     break;
@@ -48,54 +51,49 @@ public class App {
                     list(); // 목록 기능
                     break;
                 case "삭제":
-                    del(opt);
+                    del(Rq.opt); // 삭제 기능
+                    break;
+                case "수정":
+                    modify(Rq.opt); // 수정 기능
                     break;
             }
         }
     }
 
-    String cmdSplit(String cmd){
-        // 활동 분리
-        String[] s = cmd.split("\\?");
-        return s[0];
+    private void modify(Map<String, String> opt) {
+        // 수정기능
+        int num = util.getKeyValue(opt, "id"); // 수정을 원하는 Id 도출
+        int index = util.quoteToIndex(quotations, num); // id가 일치하는 명언 index 찾기
+        if (index == -1) {
+            System.out.println(num + "번 명언은 존재하지 않습니다.");
+            return;
+        }
+        // 수정작업
+        Quotation q = quotations.get(index);
+        System.out.println("명언(기존) : " + q.getContent());
+        System.out.print("명언 : ");
+        String content = scanner.nextLine();
+        System.out.print("작가(기존) : " + q.getAuthor());
+        System.out.print("작가 : ");
+        String author = scanner.nextLine();
+        // 수정값 입력
+        q = new Quotation(num, content, author);
+        quotations.set(index, q);
     }
-
-    Map<String, String> optionSplit(String cmd){
-        String[] s = cmd.split("\\?");
-        Map<String, String> map = new HashMap<>();
-        if (s.length > 1){
-        String[] options = s[1].split("=");
-        for (int i = 0; i<options.length;i+=2){
-            map.put(options[i],options[i+1]);
-        }}
-        return map;
-    }
-
-
-
-
 
     private void del(Map<String, String> opt) {
-        int num = Integer.parseInt(opt.get("id"));
-        int index = -1;
-        for (int i = 0; i < quotations.size();i++){
-            if (quotations.get(i).id == num){
-                index = i;
-                break;
-            } else {
-                index = -1;
-            }
-        }
-        if (index == -1){
+        int num = util.getKeyValue(opt, "id"); // 삭제를 원하는 Id 도출
+        int index = util.quoteToIndex(quotations, num); // id가 일치하는 명언 index 찾기
+        if (index == -1) {
             System.out.println(num + "번 명언은 존재하지 않습니다.");
-        } else{
-            quotations.remove(index);
+        } else {
+            quotations.remove(index); // 삭제
             System.out.println(num + "번 명언이 삭제되었습니다.");
         }
     }
 
     void exitApp() {
-        running = false;
+        running = false; // 구동 스위치 off
     }
 
     public void enroll() {
@@ -105,17 +103,17 @@ public class App {
         String author = scanner.nextLine();
 
         Quotation q = new Quotation(idCounter, content, author); // id, 명언, 작가 객체에 저장
-        idCounter++;
         quotations.add(q);  // 저장소에 저장
-        System.out.println(q.id + "번 명언이 등록되었습니다.");
+        System.out.println(q.getId() + "번 명언이 등록되었습니다.");
+        idCounter++; // id 자동 증가
     }
 
     void list() {
         System.out.println("번호 / 작가 / 명언\n----------------------");
+        // 모든 명언 불러오기
         for (Quotation q : quotations) {
-            System.out.println(q.id + " / " + q.author + " / " + q.content);
+            System.out.println(q.getId() + " / " + q.getAuthor() + " / " + q.getContent());
         }
     }
-
 
 }

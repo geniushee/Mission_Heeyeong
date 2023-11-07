@@ -2,44 +2,24 @@ import org.example.App;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
-import java.util.Scanner;
-
 public class Apptest {
     App app = new App();
 
     @Test
     @DisplayName("등록 종료 프로세스 실시")
-    void t1(){
-//        ByteArrayOutputStream byteArrayOutputStream = setOutToByteArray();
-//        clearSetOutOtByteArray(byteArrayOutputStream);
-        app.setScanner(genScanner("""
+    void t1() {
+        app.setScanner(testUtil.genScanner("""
                 등록
                 명언이다.
                 작가
                 종료"""));
         app.run();
-
-//
-//        app.run();
-//        assertThat().(output.toString().trim());
-//        App.setScanner(genScanner("""
-//                등록
-//                하하하
-//                하하"""));
-//        int id = 1;
-//        String cmd = scanner.nextLine();
-//        String content = scanner.nextLine();
-//        String author = scanner.nextLine();
-
-//        setOutToByteArray();
-
     }
 
     @Test
     @DisplayName("등록 및 목록 test")
-    void t2(){
-        app.setScanner(genScanner("""
+    void t2() {
+        app.setScanner(testUtil.genScanner("""
                 등록
                 하하하
                 하하
@@ -54,8 +34,8 @@ public class Apptest {
 
     @Test
     @DisplayName("삭제 test")
-    void t3(){
-        app.setScanner(genScanner("""
+    void t3() {
+        app.setScanner(testUtil.genScanner("""
                 등록
                 하하하
                 하하
@@ -72,23 +52,27 @@ public class Apptest {
         app.run();
     }
 
-    Scanner genScanner(String input){
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        return new Scanner(in);
+    @Test
+    @DisplayName("수정 test")
+    void t4() {
+        app.setScanner(testUtil.genScanner("""
+                등록
+                하하하
+                하하
+                등록
+                내용
+                작가
+                등록
+                내용2
+                작가2
+                목록
+                수정?id=1
+                수정내용1
+                수정작가1
+                목록
+                수정?id=5
+                종료"""));
+        app.run();
     }
 
-    ByteArrayOutputStream setOutToByteArray(){
-        final ByteArrayOutputStream output = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(output));
-        return output;
-    }
-
-    void clearSetOutOtByteArray(ByteArrayOutputStream output){
-        System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
-        try{
-            output.close();
-        } catch(IOException e){
-            throw new RuntimeException(e);
-        }
-    }
 }
