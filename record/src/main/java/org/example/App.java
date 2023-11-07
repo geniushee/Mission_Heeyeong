@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.utils.util;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +20,7 @@ public class App {
     int idCounter; // id 개수 표기
     List<Quotation> quotations; // 명언 저장소
     Request Rq; // 명령어 정리
+    String path; // 파일 저장 위치
 
     // 초기화
     public App() {
@@ -25,6 +29,7 @@ public class App {
         running = true;
         idCounter = 1;
         quotations = new ArrayList<>();
+        path = "./save.txt";
     }
 
     public void run() {
@@ -58,6 +63,9 @@ public class App {
                     break;
             }
         }
+        System.out.println("파일을 저장합니다. 파일명 : " + path);
+        save(path);
+        System.out.println("프로그램을 종료합니다.");
     }
 
     private void modify(Map<String, String> opt) {
@@ -114,6 +122,18 @@ public class App {
         for (Quotation q : quotations) {
             System.out.println(q.getId() + " / " + q.getAuthor() + " / " + q.getContent());
         }
+    }
+
+    void save(String filePath){
+        try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath))){
+            for (Quotation q : quotations){
+            bufferedWriter.write(q.getId() + "/" + q.getContent() + "/" + q.getAuthor());
+            bufferedWriter.newLine(); // 새로운 줄로 이동
+            }
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
     }
 
 }
