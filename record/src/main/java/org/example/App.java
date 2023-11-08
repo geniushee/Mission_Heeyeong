@@ -29,7 +29,7 @@ public class App {
         running = true;
         idCounter = 1;
         quotations = new ArrayList<>();
-        path = "./";
+        path = "./save.txt";
     }
 
     public void run() {
@@ -63,6 +63,9 @@ public class App {
                     break;
                 case "수정":
                     modify(Rq.opt); // 수정 기능
+                    break;
+                case "빌드":
+                    quotationToJson();
                     break;
             }
         }
@@ -129,8 +132,11 @@ public class App {
     }
 
     void save(String filePath) {
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath + "save.json"))) {
-            bufferedWriter.write(quotationToJsonstring());// String을 저장
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath))) {
+            for (Quotation q : quotations) {
+                bufferedWriter.write("%s/%s/%s".formatted(q.getId(),q.getContent(),q.getAuthor()));// String을 저장
+                bufferedWriter.newLine(); // 새로운 줄 생성
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -138,7 +144,7 @@ public class App {
     }
 
     void load(String path) {
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path + "save.txt"))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] data = line.split("/");
@@ -166,7 +172,7 @@ public class App {
         }
     }
 
-    String quotationToJsonstring() {
+    void quotationToJson() {
         List<String> jsonList = new ArrayList<>(); // 임시 list 생성
         try {
             ObjectMapper objectMapper = new ObjectMapper(); // json mapper 생성
@@ -177,8 +183,15 @@ public class App {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return jsonList.toString();
+        // data.json에 json으로 데이터 저장
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("./data.json"))){
+            bufferedWriter.write(jsonList.toString());
+            System.out.println("data.json 파일의 내용이 갱신되었습니다.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 
 //    void jsonstringToQuotation(){
 //        try{

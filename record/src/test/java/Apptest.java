@@ -75,5 +75,14 @@ public class Apptest {
         app.run();
     }
 
+    @Test
+    @DisplayName("빌드 test")
+    void t5(){
+        app.setScanner(testUtil.genScanner("""
+                목록
+                빌드
+                종료""".stripIndent()));
+        app.run();
+    }
 
 }
