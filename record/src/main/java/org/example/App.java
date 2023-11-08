@@ -1,5 +1,6 @@
 package org.example;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.utils.util;
@@ -17,8 +18,9 @@ public class App {
     static boolean running; // 스위치
     int idCounter; // id 개수 표기
     List<Quotation> quotations; // 명언 저장소
-    Request Rq; // 명령어 정리
+    Request Rq; // 명령어 정리 객체
     String path; // 파일 저장 위치
+
 
     // 초기화
     public App() {
@@ -27,15 +29,15 @@ public class App {
         running = true;
         idCounter = 1;
         quotations = new ArrayList<>();
-        path = "./save.txt";
+        path = "./";
     }
 
     public void run() {
         String cmd; // 명령어 받을 객체
-        Request Rq; // 명령어 정리 객체
 
         System.out.println("저장된 파일을 불러 옵니다.");
-        load(path);
+        load(path); // txt파일
+//        jsonstringToQuotation(); // json file load
         list();
         System.out.println("== 명언 앱 ==\n명령어 : 등록," +
                 "목록, 삭제?id=0, 수정?id=0, 종료");
@@ -65,7 +67,8 @@ public class App {
             }
         }
         System.out.println("파일을 저장합니다. 파일명 : " + path);
-        save(path);
+        save(path); // txt file save
+//        quotationToJsonstring(); // json file save
         System.out.println("프로그램을 종료합니다.");
     }
 
@@ -126,11 +129,8 @@ public class App {
     }
 
     void save(String filePath) {
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath))) {
-            for (Quotation q : quotations) {
-                bufferedWriter.write(q.getId() + "/" + q.getContent() + "/" + q.getAuthor());
-                bufferedWriter.newLine(); // 새로운 줄로 이동
-            }
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath + "save.json"))) {
+            bufferedWriter.write(quotationToJsonstring());// String을 저장
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -138,15 +138,15 @@ public class App {
     }
 
     void load(String path) {
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path + "save.txt"))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] data = line.split("/");
                 int id = 0;
                 String content = "";
                 String author = "";
-                for (int i = 0; i < data.length; i++){
-                    switch(i % 3){
+                for (int i = 0; i < data.length; i++) {
+                    switch (i % 3) {
                         case 0:
                             id = Integer.parseInt(data[i]);
                             break;
@@ -159,10 +159,35 @@ public class App {
                     }
 
                 }
-                quotations.add(new Quotation(id,content,author));
+                quotations.add(new Quotation(id, content, author));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    String quotationToJsonstring() {
+        List<String> jsonList = new ArrayList<>(); // 임시 list 생성
+        try {
+            ObjectMapper objectMapper = new ObjectMapper(); // json mapper 생성
+            for (Quotation q : quotations) {
+                // 객체를 jsonstring으로 변경 후 list에 저장
+                jsonList.add(objectMapper.writeValueAsString(q));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return jsonList.toString();
+    }
+
+//    void jsonstringToQuotation(){
+//        try{
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            Quotation q;
+//            q = objectMapper.readValue(new File(path + "json.json"), Quotation.class);
+//            quotations.add(q);
+//        } catch (IOException e){
+//            e.printStackTrace();
+//        }
+//    }
 }

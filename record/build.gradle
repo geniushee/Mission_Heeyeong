@@ -21,6 +21,9 @@ dependencies {
     //어썰트 메소드
     testImplementation 'org.assertj:assertj-core:3.24.2'
 
+    // jackson
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.3'
+
 
 }
 
