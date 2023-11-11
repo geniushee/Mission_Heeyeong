@@ -77,8 +77,8 @@ public class Acts {
         return outputAndSwitch;
     }
 
-    public void fileSave(String filePath, OutputAndSwitch outputAndSwitch) {
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath))) {
+    public void fileSave(OutputAndSwitch outputAndSwitch) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Const.txtFilePath))) {
             for (Quotation q : outputAndSwitch.getQuotations()) {
                 bufferedWriter.write("%s/%s/%s".formatted(q.getId(), q.getContent(), q.getAuthor()));// String을 저장
                 bufferedWriter.newLine(); // 새로운 줄 생성
@@ -89,8 +89,8 @@ public class Acts {
 
     }
 
-    public void fileLoad(String path, OutputAndSwitch outputAndSwitch) {
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
+    public void fileLoad(OutputAndSwitch outputAndSwitch) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(Const.txtFilePath))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] data = line.split("/");
@@ -109,7 +109,6 @@ public class Acts {
                             author = data[i];
                             break;
                     }
-
                 }
                 outputAndSwitch.getQuotations().add(new Quotation(id, content, author));
             }
@@ -130,7 +129,7 @@ public class Acts {
             e.printStackTrace();
         }
         // data.json에 json으로 데이터 저장
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("./data.json"))) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Const.jsonFilePath))) {
             bufferedWriter.write(jsonList.toString());
             outputAndSwitch.setOutput(Massage.jsonSave);
         } catch (IOException e) {

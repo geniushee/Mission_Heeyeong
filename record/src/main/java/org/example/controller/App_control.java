@@ -29,11 +29,10 @@ public class App_control {
                 return acts.actModify(Rq.options, outputAndSwitch); // 수정 기능
             case "빌드":
                 return acts.quotationToJson(outputAndSwitch);
+            case "입력오류":
+                break;
         }
-        outputAndSwitch.setOutput(Massage.commandError + "\n" + Massage.commandList);
+        outputAndSwitch.setOutput(Massage.commandError + "\n" + Massage.commandList); // 틀린 명령어 입력시 실행
         return outputAndSwitch;
-//        System.out.println("파일을 저장합니다. 파일명 : " + path);
-//        acts.fileSave(path); // txt file save
-//        System.out.println("프로그램을 종료합니다.");
     }
 }

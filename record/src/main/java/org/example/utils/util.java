@@ -1,5 +1,6 @@
 package org.example.utils;
 
+import lombok.Setter;
 import org.example.datas.Quotation;
 
 import java.util.List;
@@ -7,9 +8,10 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class util {
+    @Setter
+    public static Scanner sc = new Scanner(System.in);
     public static String scanner(){
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
+        return sc.nextLine();
     }
 
     public static int getKeyValue(Map<String, String> opt, String key) {
