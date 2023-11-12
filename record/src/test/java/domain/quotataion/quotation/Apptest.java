@@ -12,10 +12,10 @@ import java.io.ByteArrayOutputStream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class Apptest {
-    final App app = new App();
+    static final App app = new App();
     private String out = "";
 
-    private String run(final String cmd) {
+    public static String run(final String cmd) {
         util.setSc(testUtil.genScanner(cmd.stripIndent() + "\n종료"));
 
         ByteArrayOutputStream byteArrayOutputStream = testUtil.setOutToByteArray();

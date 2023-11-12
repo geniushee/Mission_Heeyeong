@@ -49,13 +49,13 @@ public class util {
                         String[] arr = line.split(",");
                         Files.write(Paths.get(basicpath + arr[0] + ".txt"), arr[1].getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
                     } catch (IOException e) {
+                        String[] arr = line.split(",");
                         // 부모 디렉토리가 없어서 발생한 예외인지 확인합니다.
-                        Path parentDir = Paths.get(basicpath).getParent();
+                        Path parentDir = Paths.get(basicpath + arr[0] + ".txt").getParent();
                         if (parentDir != null && Files.notExists(parentDir)) {
                             try {
                                 Files.createDirectories(parentDir);
                                 // 디렉토리를 생성한 후 다시 시도합니다.
-                                String[] arr = line.split(",");
                                 Files.write(Paths.get(basicpath + arr[0] + ".txt"), arr[1].getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
                             } catch (IOException ex) {
                                 ex.printStackTrace();
