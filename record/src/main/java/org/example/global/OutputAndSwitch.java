@@ -1,9 +1,9 @@
-package org.example.view;
+package org.example.global;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.example.datas.Quotation;
+import org.example.domain.quotation.quotation.datas.Quotation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 @AllArgsConstructor
 public class OutputAndSwitch {
     private boolean runSwitch;
-    private List<Quotation> quotations;
+    private final List<Quotation> quotations;
     private String output;
     private Stream<String> stringStream;
 

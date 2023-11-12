@@ -1,7 +1,7 @@
-package org.example.view;
+package org.example.global;
 
-import org.example.controller.App_control;
-import org.example.utils.util;
+import org.example.domain.quotation.quotation.controller.App_control;
+import org.example.standard.utils.util;
 
 import java.util.Optional;
 import java.util.stream.Stream;

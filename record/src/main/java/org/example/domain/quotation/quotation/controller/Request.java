@@ -1,13 +1,16 @@
-package org.example.controller;
+package org.example.domain.quotation.quotation.controller;
+
+import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@Getter
 public class Request {
-    String actcmd; // 활동 찾기
-    Map<String, String> options; // 옵션 정리
+    private String actcmd; // 활동 찾기
+    private Map<String, String> options; // 옵션 정리
 
 
     Request(String cmd) {

@@ -1,10 +1,10 @@
-package org.example.servie;
+package org.example.domain.quotation.quotation.servie;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.datas.Quotation;
-import org.example.utils.util;
-import org.example.view.Massage;
-import org.example.view.OutputAndSwitch;
+import org.example.domain.quotation.quotation.datas.Quotation;
+import org.example.standard.utils.util;
+import org.example.global.Massage;
+import org.example.global.OutputAndSwitch;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -77,45 +77,6 @@ public class Acts {
         return outputAndSwitch;
     }
 
-    public void fileSave(OutputAndSwitch outputAndSwitch) {
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(Const.txtFilePath))) {
-            for (Quotation q : outputAndSwitch.getQuotations()) {
-                bufferedWriter.write("%s/%s/%s".formatted(q.getId(), q.getContent(), q.getAuthor()));// String을 저장
-                bufferedWriter.newLine(); // 새로운 줄 생성
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public void fileLoad(OutputAndSwitch outputAndSwitch) {
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(Const.txtFilePath))) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                String[] data = line.split("/");
-                int id = 0;
-                String content = "";
-                String author = "";
-                for (int i = 0; i < data.length; i++) {
-                    switch (i % 3) {
-                        case 0:
-                            id = Integer.parseInt(data[i]);
-                            break;
-                        case 1:
-                            content = data[i];
-                            break;
-                        case 2:
-                            author = data[i];
-                            break;
-                    }
-                }
-                outputAndSwitch.getQuotations().add(new Quotation(id, content, author));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public OutputAndSwitch quotationToJson(OutputAndSwitch outputAndSwitch) {
         List<String> jsonList = new ArrayList<>(); // 임시 list 생성

@@ -1,4 +1,4 @@
-package org.example.view;
+package org.example.global;
 
 public class Massage {
     public static final String startMassage = "== 명언 앱 ==";
