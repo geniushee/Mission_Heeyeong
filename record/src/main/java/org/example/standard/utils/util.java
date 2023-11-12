@@ -6,13 +6,11 @@ import org.example.domain.quotation.quotation.datas.Quotation;
 import org.example.global.OutputAndSwitch;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 public class util {
     @Setter
@@ -45,7 +43,7 @@ public class util {
     public static void fileSave(String filepath, List<Quotation> quotations) {
         String basicpath = filepath;
         quotations.stream()
-                .map(quotation -> quotation.getId() +","+ quotation.getId() + "/" + quotation.getContent() + "/" + quotation.getAuthor())
+                .map(quotation -> quotation.getId() + "," + quotation.getId() + "/" + quotation.getContent() + "/" + quotation.getAuthor())
                 .forEach(line -> {
                     try {
                         String[] arr = line.split(",");
@@ -73,5 +71,24 @@ public class util {
 
     public static void fileLoad(OutputAndSwitch outputAndSwitch) {
 
+    }
+
+    @SneakyThrows
+    public static void fileDelete(String filePath) {
+        // Files.walk를 사용하여 모든 하위 파일 및 디렉토리를 찾음
+        try (Stream<Path> paths = Files.walk(Paths.get(filePath))) {
+            paths.sorted((p1, p2) -> -p1.compareTo(p2))
+                    .forEach(path -> {
+                        try {
+                            Files.delete(path); // 파일 또는 디렉토리 삭제
+                            System.out.println("삭제: " + path);
+                        } catch (NoSuchFileException e) {
+                            // 이미 삭제된 경우 무시
+                        } catch (IOException e) {
+                            System.err.println("삭제 실패: " + path);
+                            e.printStackTrace();
+                        }
+                    });
+        }
     }
 }

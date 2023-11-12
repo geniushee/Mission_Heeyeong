@@ -25,6 +25,6 @@ public class utiltest {
 
         assertThat(Files.exists(Paths.get(Const.txtFilePath))).isTrue();
 
-//        util.fileDelete(filepath);
+        util.fileDelete(Const.txtFilePath);
     }
 }
