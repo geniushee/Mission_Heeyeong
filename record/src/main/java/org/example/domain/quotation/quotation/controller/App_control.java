@@ -6,14 +6,13 @@ import org.example.global.Massage;
 import org.example.global.OutputAndSwitch;
 
 public class App_control {
-    Acts acts; // 서비스 부분
-    Export Export; // 추출 부분
-    Request Rq; // 명령어 정리 객체
+    private final Acts acts; // 서비스 부분
+    private Export Export; // 추출 부분
+    private Request Rq; // 명령어 정리 객체
 
     // 초기화
     public App_control() {
         acts = new Acts();
-
     }
 
     public OutputAndSwitch process(String cmd, OutputAndSwitch outputAndSwitch) {

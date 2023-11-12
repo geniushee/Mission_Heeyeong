@@ -16,7 +16,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class utiltest {
-    App app = new App();
+    private final App app = new App();
 
     private void txtTest(List<Quotation> list){
         util.fileSave(Const.txtFilePath, list);
@@ -28,7 +28,7 @@ public class utiltest {
 
     @Test
     @DisplayName("파일 읽기 쓰기 테스트")
-    void utT1(){
+    public void utT1(){
         List<Quotation> list = new ArrayList<>();
         for (int i = 0; i < 3; i++){
             list.add(new Quotation(i,String.valueOf(i),String.valueOf(i)));
@@ -38,7 +38,7 @@ public class utiltest {
 
     @Test
     @DisplayName("저장 테스트")
-    void utT2(){
+    public void utT2(){
         String output = Apptest.run("""
                 등록
                 내용1

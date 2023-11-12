@@ -13,7 +13,7 @@ public class Request {
     private Map<String, String> options; // 옵션 정리
 
 
-    Request(String cmd) {
+    public Request(String cmd) {
         // 활동 분리
         String[] s = cmd.split("\\?");
         actcmd = s[0].trim(); // 공백 잘못 입력 깨끗하게 처리
